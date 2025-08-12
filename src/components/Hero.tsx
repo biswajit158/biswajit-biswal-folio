@@ -14,7 +14,7 @@ const Hero = () => {
   return (
     <section 
       id="home" 
-      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background pt-20"
     >
       <div className="absolute inset-0 bg-hero-gradient opacity-20 dark:opacity-30"></div>
       <div 
@@ -25,35 +25,38 @@ const Hero = () => {
           backgroundPosition: 'center',
         }}
       ></div>
-      <div className="container mx-auto px-4 text-center relative z-10">
-        <div className="animate-fade-in bg-card/80 dark:bg-card/60 backdrop-blur-lg rounded-3xl p-8 shadow-glow border border-border/50">
-          <div className="mb-8">
-            <img
-              src={profilePhoto}
-              alt="Biswajit Biswal"
-              className="w-40 h-40 rounded-full mx-auto shadow-glow border-4 border-primary/30 object-cover transition-all duration-300 ring-4 ring-primary/20"
-            />
+      <div className="container mx-auto px-4 text-center relative z-10 py-16">
+        <div className="animate-fade-in bg-card/90 dark:bg-card/80 backdrop-blur-xl rounded-3xl p-12 shadow-glow border border-border/50 max-w-4xl mx-auto">
+          <div className="mb-10">
+            <div className="relative inline-block">
+              <img
+                src={profilePhoto}
+                alt="Biswajit Biswal"
+                className="w-48 h-48 rounded-full mx-auto shadow-glow border-4 border-primary/40 object-cover transition-all duration-300 ring-8 ring-primary/10"
+              />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/20 to-transparent"></div>
+            </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 text-foreground bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 text-foreground bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
             Biswajit Biswal
           </h1>
           
-          <h2 className="text-xl md:text-2xl mb-6 text-primary font-semibold">
+          <h2 className="text-2xl md:text-3xl mb-8 text-primary font-semibold tracking-wide">
             B.Tech CSE Student | Web & Java Developer | AI Enthusiast
           </h2>
           
-          <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-card-foreground leading-relaxed">
+          <p className="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-card-foreground leading-relaxed font-medium">
             Passionate about building innovative software solutions with a focus on web development, 
             AI applications, and cutting-edge technology. Currently pursuing Computer Science Engineering 
             at GIET University with a vision to become a leading software engineer.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-10">
             <Button 
               onClick={() => scrollToSection('#projects')}
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-glow transition-all duration-300 hover:scale-105"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-glow transition-all duration-300 hover:scale-105 px-8 py-4 text-lg font-semibold"
             >
               View Projects
             </Button>
@@ -61,33 +64,33 @@ const Hero = () => {
               onClick={() => scrollToSection('#contact')}
               variant="outline" 
               size="lg"
-              className="border-primary/50 bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground backdrop-blur-sm transition-all duration-300 hover:scale-105"
+              className="border-primary/50 bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground backdrop-blur-sm transition-all duration-300 hover:scale-105 px-8 py-4 text-lg font-semibold"
             >
               Contact Me
             </Button>
           </div>
           
-          <div className="flex justify-center space-x-6">
+          <div className="flex justify-center space-x-8">
             <a 
               href="#" 
-              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-3 rounded-full bg-background/50 hover:bg-primary/10"
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-4 rounded-full bg-background/60 hover:bg-primary/10 shadow-medium"
               aria-label="GitHub Profile"
             >
-              <Github size={24} />
+              <Github size={28} />
             </a>
             <a 
               href="#" 
-              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-3 rounded-full bg-background/50 hover:bg-primary/10"
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-4 rounded-full bg-background/60 hover:bg-primary/10 shadow-medium"
               aria-label="LinkedIn Profile"
             >
-              <Linkedin size={24} />
+              <Linkedin size={28} />
             </a>
             <a 
               href="#" 
-              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-3 rounded-full bg-background/50 hover:bg-primary/10"
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-4 rounded-full bg-background/60 hover:bg-primary/10 shadow-medium"
               aria-label="Email Contact"
             >
-              <Mail size={24} />
+              <Mail size={28} />
             </a>
           </div>
         </div>
