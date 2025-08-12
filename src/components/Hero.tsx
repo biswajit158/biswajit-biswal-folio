@@ -14,11 +14,11 @@ const Hero = () => {
   return (
     <section 
       id="home" 
-      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-hero-gradient"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-background/10"></div>
+      <div className="absolute inset-0 bg-hero-gradient opacity-20 dark:opacity-30"></div>
       <div 
-        className="absolute inset-0 opacity-20 dark:opacity-30"
+        className="absolute inset-0 opacity-10 dark:opacity-20"
         style={{
           backgroundImage: `url(${heroBg})`,
           backgroundSize: 'cover',
@@ -26,24 +26,24 @@ const Hero = () => {
         }}
       ></div>
       <div className="container mx-auto px-4 text-center relative z-10">
-        <div className="animate-fade-in">
+        <div className="animate-fade-in bg-card/80 dark:bg-card/60 backdrop-blur-lg rounded-3xl p-8 shadow-glow border border-border/50">
           <div className="mb-8">
             <img
               src={profilePhoto}
               alt="Biswajit Biswal"
-              className="w-40 h-40 rounded-full mx-auto shadow-glow border-4 border-primary/30 object-cover transition-all duration-300"
+              className="w-40 h-40 rounded-full mx-auto shadow-glow border-4 border-primary/30 object-cover transition-all duration-300 ring-4 ring-primary/20"
             />
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 text-foreground">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 text-foreground bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
             Biswajit Biswal
           </h1>
           
-          <h2 className="text-xl md:text-2xl mb-6 text-primary font-medium">
+          <h2 className="text-xl md:text-2xl mb-6 text-primary font-semibold">
             B.Tech CSE Student | Web & Java Developer | AI Enthusiast
           </h2>
           
-          <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-muted-foreground leading-relaxed">
+          <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-card-foreground leading-relaxed">
             Passionate about building innovative software solutions with a focus on web development, 
             AI applications, and cutting-edge technology. Currently pursuing Computer Science Engineering 
             at GIET University with a vision to become a leading software engineer.
@@ -61,7 +61,7 @@ const Hero = () => {
               onClick={() => scrollToSection('#contact')}
               variant="outline" 
               size="lg"
-              className="border-border bg-card/50 text-foreground hover:bg-card backdrop-blur-sm transition-all duration-300 hover:scale-105"
+              className="border-primary/50 bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground backdrop-blur-sm transition-all duration-300 hover:scale-105"
             >
               Contact Me
             </Button>
@@ -70,21 +70,21 @@ const Hero = () => {
           <div className="flex justify-center space-x-6">
             <a 
               href="#" 
-              className="text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform"
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-3 rounded-full bg-background/50 hover:bg-primary/10"
               aria-label="GitHub Profile"
             >
               <Github size={24} />
             </a>
             <a 
               href="#" 
-              className="text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform"
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-3 rounded-full bg-background/50 hover:bg-primary/10"
               aria-label="LinkedIn Profile"
             >
               <Linkedin size={24} />
             </a>
             <a 
               href="#" 
-              className="text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform"
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-3 rounded-full bg-background/50 hover:bg-primary/10"
               aria-label="Email Contact"
             >
               <Mail size={24} />
