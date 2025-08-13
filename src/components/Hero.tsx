@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail, Download } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Facebook, Instagram } from "lucide-react";
 import profilePhoto from "@/assets/profile-photo.jpg";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -70,7 +70,7 @@ const Hero = () => {
             </Button>
           </div>
           
-          <div className="flex justify-center space-x-8">
+          <div className="flex justify-center space-x-6">
             <a 
               href="#" 
               className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-4 rounded-full bg-background/60 hover:bg-primary/10 shadow-medium"
@@ -84,6 +84,20 @@ const Hero = () => {
               aria-label="LinkedIn Profile"
             >
               <Linkedin size={28} />
+            </a>
+            <a 
+              href="#" 
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-4 rounded-full bg-background/60 hover:bg-primary/10 shadow-medium"
+              aria-label="Facebook Profile"
+            >
+              <Facebook size={28} />
+            </a>
+            <a 
+              href="#" 
+              className="text-card-foreground hover:text-primary transition-all duration-200 hover:scale-110 transform p-4 rounded-full bg-background/60 hover:bg-primary/10 shadow-medium"
+              aria-label="Instagram Profile"
+            >
+              <Instagram size={28} />
             </a>
             <a 
               href="#" 
