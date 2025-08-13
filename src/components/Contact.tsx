@@ -51,7 +51,7 @@ const Contact = () => {
       icon: MapPin,
       title: "Location",
       value: "Gunupur, Odisha, India",
-      href: "#"
+      href: "https://maps.google.com/?q=Gunupur,+Odisha,+India"
     },
     {
       icon: Phone,
