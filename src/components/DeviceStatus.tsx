@@ -29,31 +29,40 @@ const DeviceStatus = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Battery API setup
+  // Battery API setup with enhanced accuracy
   useEffect(() => {
     const initBattery = async () => {
       if ('getBattery' in navigator) {
         try {
           const battery = await navigator.getBattery!();
-          setBatteryLevel(Math.round(battery.level * 100));
-          setIsCharging(battery.charging);
-          setBatterySupported(true);
-
-          const updateBattery = () => {
+          
+          const updateBatteryStatus = () => {
             setBatteryLevel(Math.round(battery.level * 100));
             setIsCharging(battery.charging);
           };
 
-          battery.addEventListener('levelchange', updateBattery);
-          battery.addEventListener('chargingchange', updateBattery);
+          // Initial update
+          updateBatteryStatus();
+          setBatterySupported(true);
+
+          // Listen for battery events
+          battery.addEventListener('levelchange', updateBatteryStatus);
+          battery.addEventListener('chargingchange', updateBatteryStatus);
+          battery.addEventListener('chargingtimechange', updateBatteryStatus);
+          battery.addEventListener('dischargingtimechange', updateBatteryStatus);
 
           return () => {
-            battery.removeEventListener('levelchange', updateBattery);
-            battery.removeEventListener('chargingchange', updateBattery);
+            battery.removeEventListener('levelchange', updateBatteryStatus);
+            battery.removeEventListener('chargingchange', updateBatteryStatus);
+            battery.removeEventListener('chargingtimechange', updateBatteryStatus);
+            battery.removeEventListener('dischargingtimechange', updateBatteryStatus);
           };
         } catch (error) {
-          console.log('Battery API not supported');
+          console.log('Battery API not supported on this device');
+          setBatterySupported(false);
         }
+      } else {
+        setBatterySupported(false);
       }
     };
 
@@ -76,16 +85,25 @@ const DeviceStatus = () => {
   };
 
   const getBatteryIcon = () => {
+    if (batteryLevel === null) return Battery;
     if (isCharging) return Zap;
-    if (batteryLevel !== null && batteryLevel < 20) return BatteryLow;
+    if (batteryLevel <= 15) return BatteryLow;
     return Battery;
   };
 
   const getBatteryColor = () => {
+    if (batteryLevel === null) return 'text-muted-foreground';
     if (isCharging) return 'text-green-500';
-    if (batteryLevel !== null && batteryLevel < 20) return 'text-red-500';
-    if (batteryLevel !== null && batteryLevel < 50) return 'text-yellow-500';
-    return 'text-foreground';
+    if (batteryLevel <= 15) return 'text-red-500';
+    if (batteryLevel <= 30) return 'text-orange-500';
+    if (batteryLevel <= 50) return 'text-yellow-500';
+    return 'text-green-600';
+  };
+
+  const getBatteryStatus = () => {
+    if (batteryLevel === null) return 'Unknown';
+    if (isCharging) return 'Charging';
+    return 'Battery';
   };
 
   const BatteryIcon = getBatteryIcon();
@@ -101,14 +119,19 @@ const DeviceStatus = () => {
         </div>
       </div>
 
-      {/* Battery Display */}
+      {/* Battery Display - Only show when supported and available */}
       {batterySupported && batteryLevel !== null && (
         <div className="flex items-center space-x-2 bg-background/10 backdrop-blur-sm rounded-lg px-3 py-2 border border-border/20">
-          <BatteryIcon size={14} className={`${getBatteryColor()} ${isCharging ? 'animate-pulse' : ''}`} />
+          <BatteryIcon 
+            size={14} 
+            className={`${getBatteryColor()} ${isCharging ? 'animate-pulse' : ''}`} 
+          />
           <div className="flex flex-col leading-none">
-            <span className={`font-medium ${getBatteryColor()}`}>{batteryLevel}%</span>
+            <span className={`font-medium ${getBatteryColor()}`}>
+              {batteryLevel}%
+            </span>
             <span className="text-xs text-muted-foreground">
-              {isCharging ? 'Charging' : 'Battery'}
+              {getBatteryStatus()}
             </span>
           </div>
         </div>
