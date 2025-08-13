@@ -40,7 +40,7 @@ const Header = () => {
     }`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-primary">
+          <div className="text-2xl font-bold text-primary hover:text-primary-glow hover:scale-105 transition-all duration-300 cursor-pointer hover:drop-shadow-lg">
             Biswajit Biswal
           </div>
 
