@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import DeviceStatus from "./DeviceStatus";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,16 +46,21 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
+          <div className="hidden md:flex items-center space-x-6">
+            <nav className="flex items-center space-x-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+
+            {/* Device Status */}
+            <DeviceStatus />
             
             {/* Theme Toggle */}
             <Button
@@ -65,7 +71,7 @@ const Header = () => {
             >
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-          </nav>
+          </div>
 
           {/* Mobile Menu & Theme Toggle */}
           <div className="md:hidden flex items-center space-x-2">
