@@ -102,8 +102,7 @@ const DeviceStatus = () => {
 
   const getBatteryStatus = () => {
     if (batteryLevel === null) return 'Unknown';
-    if (isCharging) return 'Charging';
-    return 'Battery';
+    return isCharging ? 'Charging' : '';
   };
 
   const BatteryIcon = getBatteryIcon();
@@ -130,9 +129,11 @@ const DeviceStatus = () => {
             <span className={`font-medium ${getBatteryColor()}`}>
               {batteryLevel}%
             </span>
-            <span className="text-xs text-muted-foreground">
-              {getBatteryStatus()}
-            </span>
+            {isCharging && (
+              <span className="text-xs text-green-500">
+                Charging
+              </span>
+            )}
           </div>
         </div>
       )}
