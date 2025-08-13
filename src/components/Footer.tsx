@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
+import { Github, Linkedin, Mail, Heart, Facebook, Instagram } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -51,7 +51,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://github.com/biswajit-biswal"
+                href="put the redirect link"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors duration-200 group"
@@ -60,7 +60,7 @@ const Footer = () => {
                 <Github size={20} className="group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://linkedin.com/in/biswajit-biswal"
+                href="put the redirect link"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors duration-200 group"
@@ -69,7 +69,25 @@ const Footer = () => {
                 <Linkedin size={20} className="group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="mailto:biswajit.biswal@example.com"
+                href="put the redirect link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors duration-200 group"
+                aria-label="Facebook Profile"
+              >
+                <Facebook size={20} className="group-hover:scale-110 transition-transform" />
+              </a>
+              <a
+                href="put the redirect link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors duration-200 group"
+                aria-label="Instagram Profile"
+              >
+                <Instagram size={20} className="group-hover:scale-110 transition-transform" />
+              </a>
+              <a
+                href="mailto:put the redirect link"
                 className="w-10 h-10 bg-background/10 rounded-lg flex items-center justify-center hover:bg-background/20 transition-colors duration-200 group"
                 aria-label="Email Contact"
               >
