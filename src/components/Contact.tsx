@@ -45,19 +45,19 @@ const Contact = () => {
       icon: Mail,
       title: "Email",
       value: "biswajit.biswal@example.com",
-      href: "mailto:biswajit.biswal@example.com"
+      href: "mailto:put the redirect link"
     },
     {
       icon: MapPin,
       title: "Location",
       value: "Gunupur, Odisha, India",
-      href: "https://maps.google.com/?q=Gunupur,+Odisha,+India"
+      href: "https://maps.google.com/?q=put the redirect link"
     },
     {
       icon: Phone,
       title: "Phone",
       value: "+91 XXXXX XXXXX",
-      href: "tel:+91XXXXXXXXX"
+      href: "tel:put the redirect link"
     }
   ];
 
@@ -65,31 +65,31 @@ const Contact = () => {
     {
       icon: Github,
       title: "GitHub",
-      href: "https://github.com/biswajit-biswal",
+      href: "put the redirect link",
       color: "hover:text-gray-700"
     },
     {
       icon: Linkedin,
       title: "LinkedIn",
-      href: "https://linkedin.com/in/biswajit-biswal",
+      href: "put the redirect link",
       color: "hover:text-blue-600"
     },
     {
       icon: Facebook,
       title: "Facebook",
-      href: "https://facebook.com/biswajit.biswal",
+      href: "put the redirect link",
       color: "hover:text-blue-500"
     },
     {
       icon: Instagram,
       title: "Instagram",
-      href: "https://instagram.com/biswajit.biswal",
+      href: "put the redirect link",
       color: "hover:text-pink-500"
     },
     {
       icon: Mail,
       title: "Email",
-      href: "mailto:biswajit.biswal@example.com",
+      href: "mailto:put the redirect link",
       color: "hover:text-red-600"
     }
   ];
