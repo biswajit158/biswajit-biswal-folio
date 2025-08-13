@@ -25,7 +25,7 @@ const Hero = () => {
           backgroundPosition: 'center',
         }}
       ></div>
-      <div className="container mx-auto px-4 text-center relative z-10 py-16">
+      <div className="container mx-auto px-4 text-center relative z-20 py-16">
         <div className="animate-fade-in bg-card/90 dark:bg-card/80 backdrop-blur-xl rounded-3xl p-12 shadow-glow border border-border/50 max-w-4xl mx-auto">
           <div className="mb-10">
             <div className="relative inline-block">
