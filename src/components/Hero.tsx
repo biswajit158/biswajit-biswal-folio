@@ -36,7 +36,6 @@ const Hero = () => {
               />
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/30 to-transparent group-hover:from-primary/20 transition-all duration-300"></div>
               <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-background flex items-center justify-center shadow-lg">
-                <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
               </div>
             </div>
           </div>
