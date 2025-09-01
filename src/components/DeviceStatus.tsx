@@ -118,25 +118,6 @@ const DeviceStatus = () => {
         </div>
       </div>
 
-      {/* Battery Display - Only show when supported and available */}
-      {batterySupported && batteryLevel !== null && (
-        <div className="flex items-center space-x-2 bg-background/10 backdrop-blur-sm rounded-lg px-3 py-2 border border-border/20">
-          <BatteryIcon 
-            size={14} 
-            className={`${getBatteryColor()} ${isCharging ? 'animate-pulse' : ''}`} 
-          />
-          <div className="flex flex-col leading-none">
-            <span className={`font-medium ${getBatteryColor()}`}>
-              {batteryLevel}%
-            </span>
-            {isCharging && (
-              <span className="text-xs text-green-500">
-                Charging
-              </span>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
