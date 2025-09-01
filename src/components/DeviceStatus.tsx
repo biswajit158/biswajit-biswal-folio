@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Clock, Battery, BatteryLow, Zap } from 'lucide-react';
+import { Clock, Battery, BatteryLow, Zap, CalendarIcon } from 'lucide-react';
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface BatteryManager {
   charging: boolean;
@@ -19,6 +23,7 @@ const DeviceStatus = () => {
   const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
   const [isCharging, setIsCharging] = useState<boolean>(false);
   const [batterySupported, setBatterySupported] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
   // Update time every second
   useEffect(() => {
@@ -114,7 +119,25 @@ const DeviceStatus = () => {
         <Clock size={14} className="text-primary" />
         <div className="flex flex-col leading-none">
           <span className="font-medium text-foreground">{formatTime(currentTime)}</span>
-          <span className="text-xs text-muted-foreground">{formatDate(currentTime)}</span>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                className="h-auto p-0 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+              >
+                {formatDate(currentTime)}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="end">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
 
