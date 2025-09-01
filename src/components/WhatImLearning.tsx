@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { 
   BookOpen, 
   Code, 
@@ -13,6 +14,11 @@ import {
 } from "lucide-react";
 
 const WhatImLearning = () => {
+  const [titleRef, isTitleVisible] = useScrollAnimation({ triggerOnce: true });
+  const [currentLearningRef, isCurrentLearningVisible] = useScrollAnimation({ triggerOnce: true });
+  const [goalsRef, isGoalsVisible] = useScrollAnimation({ triggerOnce: true });
+  const [achievementsRef, isAchievementsVisible] = useScrollAnimation({ triggerOnce: true });
+  const [philosophyRef, isPhilosophyVisible] = useScrollAnimation({ triggerOnce: true });
   const currentLearning = [
     {
       title: "Advanced React & Next.js",
@@ -96,7 +102,12 @@ const WhatImLearning = () => {
   return (
     <section id="learning" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
+        <div 
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            isTitleVisible ? 'animate-fade-in opacity-100' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">What I'm Learning</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Continuous learning is key to staying relevant in tech. Here's my current learning journey and future goals.
@@ -106,7 +117,12 @@ const WhatImLearning = () => {
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Current Learning */}
           <div className="space-y-6">
-            <Card className="bg-card-gradient shadow-medium">
+            <Card 
+              ref={currentLearningRef}
+              className={`bg-card-gradient shadow-medium transition-all duration-700 delay-200 ${
+                isCurrentLearningVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-2xl">
                   <BookOpen className="text-primary" />
@@ -151,7 +167,12 @@ const WhatImLearning = () => {
             </Card>
 
             {/* Recent Achievements */}
-            <Card className="bg-card-gradient shadow-medium">
+            <Card 
+              ref={achievementsRef}
+              className={`bg-card-gradient shadow-medium transition-all duration-700 delay-400 ${
+                isAchievementsVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <TrendingUp className="text-primary" />
@@ -177,7 +198,12 @@ const WhatImLearning = () => {
 
           {/* Upcoming Goals & Philosophy */}
           <div className="space-y-6">
-            <Card className="bg-card-gradient shadow-medium">
+            <Card 
+              ref={goalsRef}
+              className={`bg-card-gradient shadow-medium transition-all duration-700 delay-300 ${
+                isGoalsVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-2xl">
                   <Target className="text-primary" />
@@ -211,7 +237,12 @@ const WhatImLearning = () => {
             </Card>
 
             {/* Learning Philosophy */}
-            <Card className="bg-hero-gradient text-white shadow-glow">
+            <Card 
+              ref={philosophyRef}
+              className={`bg-hero-gradient text-white shadow-glow transition-all duration-700 delay-500 ${
+                isPhilosophyVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Lightbulb className="text-white" />

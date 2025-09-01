@@ -1,17 +1,23 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
 import { 
+  Code, 
+  Database, 
   Globe, 
   Smartphone, 
-  Shield, 
-  Brain, 
   Cpu, 
-  Signal,
-  Code2,
-  Coffee
+  Brain,
+  Palette,
+  GitBranch,
+  Server,
+  Shield
 } from "lucide-react";
 
 const Skills = () => {
+  const [titleRef, isTitleVisible] = useScrollAnimation({ triggerOnce: true });
+  const [skillsRef, visibleSkills] = useStaggeredAnimation(6, 150);
   const skillCategories = [
     {
       title: "Web Development",
@@ -26,7 +32,7 @@ const Skills = () => {
     },
     {
       title: "Programming",
-      icon: Code2,
+      icon: Code,
       skills: [
         { name: "Java", level: 90 },
         { name: "OOP", level: 85 },
@@ -59,7 +65,7 @@ const Skills = () => {
     },
     {
       title: "Compiler Design",
-      icon: Coffee,
+      icon: Database,
       skills: [
         { name: "Lexical Analysis", level: 85 },
         { name: "Syntax Analysis", level: 80 },
@@ -81,7 +87,7 @@ const Skills = () => {
     },
     {
       title: "Digital Signal Processing",
-      icon: Signal,
+      icon: Server,
       skills: [
         { name: "Signal Analysis", level: 75 },
         { name: "Digital Filters", level: 70 },
@@ -106,59 +112,61 @@ const Skills = () => {
   return (
     <section id="skills" className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Skills & Expertise</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A comprehensive skill set covering web development, mobile apps, AI, and core computer science fundamentals.
-          </p>
-        </div>
+      <div 
+        ref={titleRef}
+        className={`text-center mb-16 transition-all duration-700 ${
+          isTitleVisible ? 'animate-fade-in opacity-100' : 'opacity-0 translate-y-10'
+        }`}
+      >
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Skills & Technologies</h2>
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          Proficient in modern technologies with hands-on experience in full-stack development, 
+          mobile applications, and emerging tech domains.
+        </p>
+      </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {skillCategories.map((category, index) => {
-            const IconComponent = category.icon;
-            return (
-              <Card 
-                key={category.title}
-                className="bg-skill-gradient shadow-subtle hover:shadow-medium transition-all duration-300 hover:scale-105 animate-scale-in group"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${category.color} group-hover:scale-110 transition-transform duration-200`}>
-                      <IconComponent className="w-6 h-6" />
+      <div ref={skillsRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {skillCategories.map((category, index) => {
+          const IconComponent = category.icon;
+          const isVisible = visibleSkills.includes(index);
+          return (
+            <Card 
+              key={category.title} 
+              className={`bg-card hover:bg-card/80 transition-all duration-700 hover:scale-105 shadow-medium group ${
+                isVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <div className={`p-3 rounded-lg ${category.color} group-hover:scale-110 transition-transform duration-200`}>
+                    <IconComponent className="w-6 h-6" />
+                  </div>
+                  {category.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {category.skills.map((skill, skillIndex) => (
+                  <div key={skill.name} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-foreground">{skill.name}</span>
+                      <span className="text-sm text-muted-foreground">{skill.level}%</span>
                     </div>
-                    <h3 className="text-lg font-semibold ml-3 text-foreground group-hover:text-primary transition-colors">
-                      {category.title}
-                    </h3>
+                    <Progress 
+                      value={isVisible ? skill.level : 0} 
+                      className="h-2 bg-secondary"
+                      style={{ 
+                        transitionDelay: `${(index * 150) + (skillIndex * 100)}ms`,
+                        transition: 'all 0.8s ease-out'
+                      }}
+                    />
                   </div>
-                  
-                  <div className="space-y-3">
-                    {category.skills.map((skill, skillIndex) => (
-                      <div key={skill.name} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-foreground">
-                            {skill.name}
-                          </span>
-                          <span className="text-xs text-muted-foreground font-mono">
-                            {skill.level}%
-                          </span>
-                        </div>
-                        <Progress 
-                          value={skill.level} 
-                          className="h-2 animate-fade-in"
-                          style={{ 
-                            animationDelay: `${index * 0.1 + skillIndex * 0.05}s`,
-                            animationDuration: '1.5s'
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                ))}
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
 
         <div className="mt-16 text-center">
           <Card className="bg-card-gradient shadow-medium max-w-2xl mx-auto animate-fade-in">

@@ -27,13 +27,17 @@ const Hero = () => {
       <div className="container mx-auto px-4 text-center relative z-20 py-16">
         <div className="animate-fade-in bg-card/90 dark:bg-card/80 backdrop-blur-xl rounded-3xl p-12 shadow-glow border border-border/50 max-w-4xl mx-auto">
           <div className="mb-10">
-            <div className="relative inline-block">
+            <div className="relative inline-block group">
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary via-primary-glow to-primary rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse"></div>
               <img
                 src="/lovable-uploads/ca638ad2-6bf6-4594-a3b2-fdf20a261301.png"
-                alt="Biswajit Biswal"
-                className="w-48 h-48 rounded-full mx-auto shadow-glow border-4 border-primary/40 object-cover transition-all duration-300 ring-8 ring-primary/10"
+                alt="Biswajit Biswal - Professional Software Developer"
+                className="relative w-52 h-52 rounded-full mx-auto shadow-glow border-4 border-primary/50 object-cover transition-all duration-500 ring-8 ring-primary/20 group-hover:ring-primary/40 group-hover:scale-105 group-hover:shadow-2xl"
               />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/20 to-transparent"></div>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/30 to-transparent group-hover:from-primary/20 transition-all duration-300"></div>
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-background flex items-center justify-center shadow-lg">
+                <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+              </div>
             </div>
           </div>
           

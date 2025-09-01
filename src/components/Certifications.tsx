@@ -1,8 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Award, Calendar, ExternalLink } from "lucide-react";
+import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
+import { Award, Calendar, ExternalLink, CheckCircle2 } from "lucide-react";
 
 const Certifications = () => {
+  const [titleRef, isTitleVisible] = useScrollAnimation({ triggerOnce: true });
+  const [certsRef, visibleCerts] = useStaggeredAnimation(4, 200);
+  const [socialProofRef, isSocialProofVisible] = useScrollAnimation({ triggerOnce: true });
+  
   const certifications = [
     {
       title: "Full Stack Web Development",
@@ -42,10 +47,22 @@ const Certifications = () => {
     }
   ];
 
+  const socialProofItems = [
+    { name: "GIET University", logo: "🎓", type: "University", verified: true },
+    { name: "Oracle Certified", logo: "☕", type: "Certification", verified: true },
+    { name: "FreeCodeCamp", logo: "🏆", type: "Bootcamp", verified: true },
+    { name: "Google Developer", logo: "📱", type: "Program", verified: true }
+  ];
+
   return (
     <section id="certifications" className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div 
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            isTitleVisible ? 'animate-fade-in opacity-100' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <h2 className="text-4xl font-bold text-foreground mb-4">
             Professional Certifications
           </h2>
@@ -54,61 +71,92 @@ const Certifications = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {certifications.map((cert, index) => (
-            <Card 
-              key={index} 
-              className="group hover:shadow-glow transition-all duration-300 hover:scale-105 border-muted bg-card/50 backdrop-blur-sm"
-            >
-              <CardHeader className="pb-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${cert.color}`}>
-                      <Award className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
-                        {cert.title}
-                      </CardTitle>
-                      <p className="text-sm text-muted-foreground font-medium">
-                        {cert.issuer}
-                      </p>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors cursor-pointer" />
-                </div>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground leading-relaxed">
-                  {cert.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {cert.skills.map((skill, skillIndex) => (
-                    <Badge 
-                      key={skillIndex}
-                      variant="secondary" 
-                      className="text-xs font-medium bg-secondary/50 hover:bg-secondary/80 transition-colors"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border/50">
-                  <Calendar className="w-4 h-4" />
-                  <span>Certified in {cert.date}</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Social Proof Badges */}
+        <div 
+          ref={socialProofRef}
+          className={`mb-16 transition-all duration-700 delay-300 ${
+            isSocialProofVisible ? 'animate-fade-in opacity-100' : 'opacity-0 translate-y-5'
+          }`}
+        >
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            {socialProofItems.map((item, index) => (
+              <div 
+                key={item.name}
+                className={`flex items-center gap-2 bg-background/60 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-2 shadow-lg hover:shadow-glow transition-all duration-300 hover:scale-105 ${
+                  isSocialProofVisible ? 'animate-scale-in' : ''
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <span className="text-2xl">{item.logo}</span>
+                <span className="font-medium text-foreground">{item.name}</span>
+                {item.verified && (
+                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground">
-            Continuously expanding my expertise through professional development and industry certifications
-          </p>
+        <div ref={certsRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {certifications.map((cert, index) => {
+            const isVisible = visibleCerts.includes(index);
+            return (
+              <Card 
+                key={index} 
+                className={`group hover:shadow-glow transition-all duration-700 hover:scale-105 bg-card ${
+                  isVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-12 h-12 rounded-lg ${cert.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
+                      <Award className="w-6 h-6" />
+                    </div>
+                    <a 
+                      href={cert.link}
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink size={18} />
+                    </a>
+                  </div>
+                  
+                  <CardTitle className="text-xl font-bold text-foreground mb-2">
+                    {cert.title}
+                  </CardTitle>
+                  
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                    <span className="font-medium text-primary">{cert.issuer}</span>
+                    <span>•</span>
+                    <div className="flex items-center gap-1">
+                      <Calendar size={14} />
+                      <span>{cert.date}</span>
+                    </div>
+                  </div>
+                </CardHeader>
+                
+                <CardContent>
+                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
+                    {cert.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {cert.skills.map((skill, skillIndex) => (
+                      <Badge 
+                        key={skillIndex}
+                        variant="secondary" 
+                        className="text-xs font-medium bg-secondary/50 hover:bg-secondary/80 transition-colors"
+                      >
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>
