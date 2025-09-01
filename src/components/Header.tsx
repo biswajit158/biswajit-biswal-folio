@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { usePageTransition } from "@/hooks/use-page-transition";
 import DeviceStatus from "./DeviceStatus";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { isTransitioning, scrollToSection } = usePageTransition();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,18 +29,15 @@ const Header = () => {
     { href: '#contact', label: 'Contact' },
   ];
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
-    }
+  const handleScrollToSection = (href: string) => {
+    scrollToSection(href);
+    setIsMobileMenuOpen(false);
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ? 'bg-background/95 backdrop-blur-md shadow-subtle border-b border-border/50' : 'bg-transparent'
-    }`}>
+    } ${isTransitioning ? 'opacity-90' : 'opacity-100'}`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold text-primary hover:text-primary-glow hover:scale-105 transition-all duration-300 cursor-pointer hover:drop-shadow-lg">
@@ -51,10 +50,11 @@ const Header = () => {
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+                  onClick={() => handleScrollToSection(item.href)}
+                  className="text-foreground hover:text-primary transition-all duration-300 font-medium relative group"
                 >
                   {item.label}
+                  <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </button>
               ))}
             </nav>
@@ -95,15 +95,17 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 animate-fade-in">
-            <div className="flex flex-col space-y-4">
-              {navItems.map((item) => (
+          <nav className="md:hidden mt-4 pb-4 animate-fade-in bg-background/95 backdrop-blur-md rounded-lg border border-border/50 mx-4">
+            <div className="flex flex-col space-y-2 p-4">
+              {navItems.map((item, index) => (
                 <button
                   key={item.href}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-left text-foreground hover:text-primary transition-colors duration-200 font-medium py-2"
+                  onClick={() => handleScrollToSection(item.href)}
+                  className="text-left text-foreground hover:text-primary transition-all duration-300 font-medium py-2 px-4 rounded-lg hover:bg-background/50 relative group"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   {item.label}
+                  <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </button>
               ))}
             </div>
