@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Download } from "lucide-react";
-import profilePhoto from "@/assets/profile-photo.jpg";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
@@ -30,7 +29,7 @@ const Hero = () => {
           <div className="mb-10">
             <div className="relative inline-block">
               <img
-                src={profilePhoto}
+                src="/lovable-uploads/ca638ad2-6bf6-4594-a3b2-fdf20a261301.png"
                 alt="Biswajit Biswal"
                 className="w-48 h-48 rounded-full mx-auto shadow-glow border-4 border-primary/40 object-cover transition-all duration-300 ring-8 ring-primary/10"
               />
