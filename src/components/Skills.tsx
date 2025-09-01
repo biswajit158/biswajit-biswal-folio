@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { 
   Globe, 
   Smartphone, 
@@ -16,49 +16,89 @@ const Skills = () => {
     {
       title: "Web Development",
       icon: Globe,
-      skills: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "React (Basics)"],
+      skills: [
+        { name: "HTML/CSS", level: 85 },
+        { name: "JavaScript", level: 70 },
+        { name: "React", level: 60 },
+        { name: "Tailwind CSS", level: 80 }
+      ],
       color: "bg-blue-500/10 text-blue-700"
     },
     {
       title: "Programming",
       icon: Code2,
-      skills: ["Java Programming", "Object-Oriented Programming", "Data Structures", "Algorithms"],
+      skills: [
+        { name: "Java", level: 90 },
+        { name: "OOP", level: 85 },
+        { name: "Data Structures", level: 80 },
+        { name: "Algorithms", level: 75 }
+      ],
       color: "bg-green-500/10 text-green-700"
     },
     {
       title: "Mobile Development",
       icon: Smartphone,
-      skills: ["Android Development", "Kotlin", "XML Layouts", "Mobile UI/UX"],
+      skills: [
+        { name: "Android Dev", level: 75 },
+        { name: "Kotlin", level: 70 },
+        { name: "XML Layouts", level: 80 },
+        { name: "Mobile UI/UX", level: 65 }
+      ],
       color: "bg-purple-500/10 text-purple-700"
     },
     {
       title: "Security & Ethical Hacking",
       icon: Shield,
-      skills: ["Ethical Hacking Basics", "Network Security", "Penetration Testing", "Security Tools"],
+      skills: [
+        { name: "Ethical Hacking", level: 60 },
+        { name: "Network Security", level: 65 },
+        { name: "Penetration Testing", level: 55 },
+        { name: "Security Tools", level: 70 }
+      ],
       color: "bg-red-500/10 text-red-700"
     },
     {
       title: "Compiler Design",
       icon: Coffee,
-      skills: ["Lexical Analysis", "Syntax Analysis", "Semantic Analysis", "Code Generation"],
+      skills: [
+        { name: "Lexical Analysis", level: 85 },
+        { name: "Syntax Analysis", level: 80 },
+        { name: "Semantic Analysis", level: 75 },
+        { name: "Code Generation", level: 70 }
+      ],
       color: "bg-orange-500/10 text-orange-700"
     },
     {
       title: "Microprocessors",
       icon: Cpu,
-      skills: ["8085", "8086", "8051", "8255", "8257", "8259"],
+      skills: [
+        { name: "8085/8086", level: 90 },
+        { name: "8051", level: 85 },
+        { name: "8255/8257", level: 80 },
+        { name: "8259", level: 75 }
+      ],
       color: "bg-indigo-500/10 text-indigo-700"
     },
     {
       title: "Digital Signal Processing",
       icon: Signal,
-      skills: ["Signal Analysis", "Digital Filters", "DSP Algorithms", "Signal Processing"],
+      skills: [
+        { name: "Signal Analysis", level: 75 },
+        { name: "Digital Filters", level: 70 },
+        { name: "DSP Algorithms", level: 65 },
+        { name: "Signal Processing", level: 80 }
+      ],
       color: "bg-teal-500/10 text-teal-700"
     },
     {
       title: "AI & Machine Learning",
       icon: Brain,
-      skills: ["ML Concepts", "Deep Learning", "Neural Networks", "AI Applications"],
+      skills: [
+        { name: "ML Concepts", level: 60 },
+        { name: "Deep Learning", level: 50 },
+        { name: "Neural Networks", level: 55 },
+        { name: "AI Applications", level: 65 }
+      ],
       color: "bg-pink-500/10 text-pink-700"
     }
   ];
@@ -92,15 +132,26 @@ const Skills = () => {
                     </h3>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2">
-                    {category.skills.map((skill) => (
-                      <Badge 
-                        key={skill}
-                        variant="secondary"
-                        className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
-                      >
-                        {skill}
-                      </Badge>
+                  <div className="space-y-3">
+                    {category.skills.map((skill, skillIndex) => (
+                      <div key={skill.name} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-foreground">
+                            {skill.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground font-mono">
+                            {skill.level}%
+                          </span>
+                        </div>
+                        <Progress 
+                          value={skill.level} 
+                          className="h-2 animate-fade-in"
+                          style={{ 
+                            animationDelay: `${index * 0.1 + skillIndex * 0.05}s`,
+                            animationDuration: '1.5s'
+                          }}
+                        />
+                      </div>
                     ))}
                   </div>
                 </CardContent>

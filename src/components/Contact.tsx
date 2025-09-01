@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram } from "lucide-react";
+import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle } from "lucide-react";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,24 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+  const [fieldTouched, setFieldTouched] = useState<{[key: string]: boolean}>({});
   const { toast } = useToast();
+
+  const validateField = (name: string, value: string) => {
+    switch (name) {
+      case 'name':
+        return value.length < 2 ? 'Name must be at least 2 characters' : '';
+      case 'email':
+        return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Please enter a valid email address' : '';
+      case 'subject':
+        return value.length < 3 ? 'Subject must be at least 3 characters' : '';
+      case 'message':
+        return value.length < 10 ? 'Message must be at least 10 characters' : '';
+      default:
+        return '';
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -23,21 +40,63 @@ const Contact = () => {
       ...prev,
       [name]: value
     }));
+
+    // Real-time validation
+    if (fieldTouched[name]) {
+      const error = validateField(name, value);
+      setFieldErrors(prev => ({
+        ...prev,
+        [name]: error
+      }));
+    }
+  };
+
+  const handleFieldBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFieldTouched(prev => ({ ...prev, [name]: true }));
+    const error = validateField(name, value);
+    setFieldErrors(prev => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all fields
+    const errors: {[key: string]: string} = {};
+    Object.entries(formData).forEach(([key, value]) => {
+      const error = validateField(key, value);
+      if (error) errors[key] = error;
+    });
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setFieldTouched({
+        name: true,
+        email: true,
+        subject: true,
+        message: true
+      });
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     // Simulate form submission
     setTimeout(() => {
       toast({
-        title: "Message Sent!",
-        description: "Thank you for your message. I'll get back to you soon!",
+        title: "Message Sent Successfully!",
+        description: "Thank you for your message. I'll get back to you within 24 hours!",
       });
       setFormData({ name: '', email: '', subject: '', message: '' });
+      setFieldErrors({});
+      setFieldTouched({});
       setIsSubmitting(false);
-    }, 1000);
+    }, 2000);
   };
 
   const contactInfo = [
@@ -118,7 +177,12 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="flex items-center gap-2">
+                      Full Name
+                      {fieldTouched.name && !fieldErrors.name && (
+                        <CheckCircle size={14} className="text-green-600" />
+                      )}
+                    </Label>
                     <Input
                       id="name"
                       name="name"
@@ -126,12 +190,26 @@ const Contact = () => {
                       placeholder="Your full name"
                       value={formData.name}
                       onChange={handleInputChange}
+                      onBlur={handleFieldBlur}
                       required
-                      className="transition-all duration-200 focus:ring-2 focus:ring-primary"
+                      className={`transition-all duration-200 focus:ring-2 focus:ring-primary ${
+                        fieldErrors.name ? 'border-red-500' : fieldTouched.name && !fieldErrors.name ? 'border-green-500' : ''
+                      }`}
                     />
+                    {fieldErrors.name && (
+                      <div className="flex items-center gap-2 text-red-600 text-sm">
+                        <AlertCircle size={14} />
+                        {fieldErrors.name}
+                      </div>
+                    )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
+                    <Label htmlFor="email" className="flex items-center gap-2">
+                      Email Address
+                      {fieldTouched.email && !fieldErrors.email && (
+                        <CheckCircle size={14} className="text-green-600" />
+                      )}
+                    </Label>
                     <Input
                       id="email"
                       name="email"
@@ -139,14 +217,28 @@ const Contact = () => {
                       placeholder="your.email@example.com"
                       value={formData.email}
                       onChange={handleInputChange}
+                      onBlur={handleFieldBlur}
                       required
-                      className="transition-all duration-200 focus:ring-2 focus:ring-primary"
+                      className={`transition-all duration-200 focus:ring-2 focus:ring-primary ${
+                        fieldErrors.email ? 'border-red-500' : fieldTouched.email && !fieldErrors.email ? 'border-green-500' : ''
+                      }`}
                     />
+                    {fieldErrors.email && (
+                      <div className="flex items-center gap-2 text-red-600 text-sm">
+                        <AlertCircle size={14} />
+                        {fieldErrors.email}
+                      </div>
+                    )}
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
+                  <Label htmlFor="subject" className="flex items-center gap-2">
+                    Subject
+                    {fieldTouched.subject && !fieldErrors.subject && (
+                      <CheckCircle size={14} className="text-green-600" />
+                    )}
+                  </Label>
                   <Input
                     id="subject"
                     name="subject"
@@ -154,23 +246,46 @@ const Contact = () => {
                     placeholder="What's this about?"
                     value={formData.subject}
                     onChange={handleInputChange}
+                    onBlur={handleFieldBlur}
                     required
-                    className="transition-all duration-200 focus:ring-2 focus:ring-primary"
+                    className={`transition-all duration-200 focus:ring-2 focus:ring-primary ${
+                      fieldErrors.subject ? 'border-red-500' : fieldTouched.subject && !fieldErrors.subject ? 'border-green-500' : ''
+                    }`}
                   />
+                  {fieldErrors.subject && (
+                    <div className="flex items-center gap-2 text-red-600 text-sm">
+                      <AlertCircle size={14} />
+                      {fieldErrors.subject}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
+                  <Label htmlFor="message" className="flex items-center gap-2">
+                    Message
+                    {fieldTouched.message && !fieldErrors.message && (
+                      <CheckCircle size={14} className="text-green-600" />
+                    )}
+                  </Label>
                   <Textarea
                     id="message"
                     name="message"
                     placeholder="Tell me more about your project or inquiry..."
                     value={formData.message}
                     onChange={handleInputChange}
+                    onBlur={handleFieldBlur}
                     required
                     rows={6}
-                    className="transition-all duration-200 focus:ring-2 focus:ring-primary resize-none"
+                    className={`transition-all duration-200 focus:ring-2 focus:ring-primary resize-none ${
+                      fieldErrors.message ? 'border-red-500' : fieldTouched.message && !fieldErrors.message ? 'border-green-500' : ''
+                    }`}
                   />
+                  {fieldErrors.message && (
+                    <div className="flex items-center gap-2 text-red-600 text-sm">
+                      <AlertCircle size={14} />
+                      {fieldErrors.message}
+                    </div>
+                  )}
                 </div>
                 
                 <Button 
