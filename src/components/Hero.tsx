@@ -35,8 +35,6 @@ const Hero = () => {
                 className="relative w-52 h-52 rounded-full mx-auto shadow-glow border-4 border-primary/50 object-cover transition-all duration-500 ring-8 ring-primary/20 group-hover:ring-primary/40 group-hover:scale-105 group-hover:shadow-2xl"
               />
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/30 to-transparent group-hover:from-primary/20 transition-all duration-300"></div>
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-background flex items-center justify-center shadow-lg">
-              </div>
             </div>
           </div>
           
