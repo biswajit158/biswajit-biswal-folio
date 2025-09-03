@@ -88,10 +88,10 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // EmailJS configuration - replace with your actual values
-      const serviceId = 'YOUR_SERVICE_ID';
-      const templateId = 'YOUR_TEMPLATE_ID'; 
-      const publicKey = 'YOUR_PUBLIC_KEY';
+      // EmailJS configuration
+      const serviceId = 'service_ihbrnil';
+      const templateId = 'template_40ro7di'; 
+      const publicKey = 'gNLeEX6vNNOL07jxw';
 
       // Initialize EmailJS with your public key
       emailjs.init(publicKey);
