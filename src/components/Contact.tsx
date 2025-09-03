@@ -111,11 +111,21 @@ const Contact = () => {
       setFieldTouched({});
     } catch (error) {
       console.error('Error sending message:', error);
-      toast({
-        title: "Failed to Send Message",
-        description: "There was an error sending your message. Please try again later.",
-        variant: "destructive",
-      });
+      
+      // More detailed error logging
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        toast({
+          title: "Connection Error",
+          description: "Unable to connect to the email service. Please check your internet connection or try again later.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Failed to Send Message", 
+          description: error instanceof Error ? error.message : "There was an error sending your message. Please try again later.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

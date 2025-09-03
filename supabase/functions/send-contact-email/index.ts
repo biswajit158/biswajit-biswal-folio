@@ -48,7 +48,7 @@ serve(async (req) => {
       body: JSON.stringify({
         sender: {
           name: 'Portfolio Contact Form',
-          email: 'noreply@gmail.com', // Brevo verified sender
+          email: 'biswajit143kishan@gmail.com', // Use your verified email as sender
         },
         to: [
           {
