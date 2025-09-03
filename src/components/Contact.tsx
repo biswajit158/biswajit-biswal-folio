@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -87,19 +88,29 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://f637d2fe-ff54-4a0b-8a12-a74baf355bef.supabase.co/functions/v1/send-contact-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // EmailJS configuration - replace with your actual values
+      const serviceId = 'YOUR_SERVICE_ID';
+      const templateId = 'YOUR_TEMPLATE_ID'; 
+      const publicKey = 'YOUR_PUBLIC_KEY';
+
+      // Initialize EmailJS with your public key
+      emailjs.init(publicKey);
+
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          to_email: 'biswajit143kishan@gmail.com',
         },
-        body: JSON.stringify(formData),
-      });
+        publicKey
+      );
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to send message');
-      }
+      console.log('EmailJS result:', result);
 
       toast({
         title: "Message Sent Successfully!",
@@ -113,19 +124,11 @@ const Contact = () => {
       console.error('Error sending message:', error);
       
       // More detailed error logging
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        toast({
-          title: "Connection Error",
-          description: "Unable to connect to the email service. Please check your internet connection or try again later.",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Failed to Send Message", 
-          description: error instanceof Error ? error.message : "There was an error sending your message. Please try again later.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Failed to Send Message", 
+        description: error instanceof Error ? error.message : "There was an error sending your message. Please try again later.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }
