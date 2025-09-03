@@ -48,11 +48,11 @@ serve(async (req) => {
       body: JSON.stringify({
         sender: {
           name: 'Portfolio Contact Form',
-          email: 'noreply@yourdomain.com', // Replace with your domain
+          email: 'noreply@your-domain.com', // Replace with your verified sender email
         },
         to: [
           {
-            email: 'biswajit.biswal@example.com', // Replace with your email
+            email: 'your-email@gmail.com', // Replace with your actual email
             name: 'Biswajit Biswal',
           },
         ],
