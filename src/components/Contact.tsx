@@ -125,8 +125,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      value: "biswajit.biswal@example.com",
-      href: "mailto:put the redirect link"
+      value: "biswajit143kishan@gmail.com",
+      href: "mailto:biswajit143kishan@gmail.com"
     },
     {
       icon: MapPin,
@@ -170,7 +170,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      href: "mailto:put the redirect link",
+      href: "mailto:biswajit143kishan@gmail.com",
       color: "hover:text-red-600"
     }
   ];
@@ -236,7 +236,7 @@ const Contact = () => {
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="your.email@example.com"
+                      placeholder="john.doe@example.com"
                       value={formData.email}
                       onChange={handleInputChange}
                       onBlur={handleFieldBlur}
