@@ -87,7 +87,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/send-contact-email', {
+      const response = await fetch('https://f637d2fe-ff54-4a0b-8a12-a74baf355bef.supabase.co/functions/v1/send-contact-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
