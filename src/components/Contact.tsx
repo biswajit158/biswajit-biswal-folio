@@ -86,17 +86,39 @@ const Contact = () => {
 
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/send-contact-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
       toast({
         title: "Message Sent Successfully!",
         description: "Thank you for your message. I'll get back to you within 24 hours!",
       });
+      
       setFormData({ name: '', email: '', subject: '', message: '' });
       setFieldErrors({});
       setFieldTouched({});
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: "Failed to Send Message",
+        description: "There was an error sending your message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 2000);
+    }
   };
 
   const contactInfo = [
