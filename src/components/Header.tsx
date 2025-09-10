@@ -16,23 +16,9 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
       
-      // Update scroll state
-      setIsScrolled(currentScrollY > 50);
-      
-      // Professional navbar behavior: hide on scroll down, show on scroll up
-      if (currentScrollY < 50) {
-        // Always visible at top
-        setIsVisible(true);
-      } else if (scrollDirection === 'down' && currentScrollY - lastScrollY > 5) {
-        // Hide when scrolling down (with threshold to prevent flickering)
-        setIsVisible(false);
-        setIsMobileMenuOpen(false); // Close mobile menu when hiding
-      } else if (scrollDirection === 'up' && lastScrollY - currentScrollY > 5) {
-        // Show when scrolling up
-        setIsVisible(true);
-      }
+      // Update scroll state for blur effect
+      setIsScrolled(currentScrollY > 20);
       
       setLastScrollY(currentScrollY);
     };
@@ -57,16 +43,14 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-in-out ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      } ${
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-out ${
         isScrolled 
-          ? 'bg-background/98 backdrop-blur-xl shadow-medium border-b border-border/60' 
-          : 'bg-background/20 backdrop-blur-sm'
+          ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border/40' 
+          : 'bg-background/10 backdrop-blur-md'
       }`}
       style={{ 
-        backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(8px) saturate(120%)',
-        WebkitBackdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(8px) saturate(120%)'
+        backdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)',
+        WebkitBackdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)'
       }}
     >
       <div className="container mx-auto px-4 py-4">
