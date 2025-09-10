@@ -39,12 +39,13 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-out ${
+      className={`fixed top-0 left-0 right-0 z-[9999] w-full transition-all duration-300 ease-out ${
         isScrolled 
           ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border/40' 
           : 'bg-background/10 backdrop-blur-md'
       }`}
       style={{ 
+        position: 'fixed',
         backdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)',
         WebkitBackdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)'
       }}
