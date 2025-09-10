@@ -11,7 +11,9 @@ const Projects = () => {
       technologies: ["Android", "Kotlin", "PDF Processing", "SQLite", "Material Design"],
       icon: FileText,
       category: "Mobile App",
-      features: ["Bookmark Management", "Auto-save Reading Position", "Full-text Search", "Zoom Controls", "Dark/Night Mode"]
+      features: ["Bookmark Management", "Auto-save Reading Position", "Full-text Search", "Zoom Controls", "Dark/Night Mode"],
+      githubUrl: "https://github.com/yourusername/pdf-ebook-android",
+      liveUrl: "https://play.google.com/store/apps/details?id=com.yourapp.pdfebook"
     },
     {
       title: "AI Language Learning Platform",
@@ -19,7 +21,9 @@ const Projects = () => {
       technologies: ["WebRTC", "Supabase", "Hugging Face", "MediaPipe", "React", "AI/ML"],
       icon: BookOpen,
       category: "AI Platform",
-      features: ["Talking AI Avatar", "Real-time Communication", "Gesture Recognition", "Progress Tracking", "Interactive Lessons"]
+      features: ["Talking AI Avatar", "Real-time Communication", "Gesture Recognition", "Progress Tracking", "Interactive Lessons"],
+      githubUrl: "https://github.com/yourusername/ai-language-learning",
+      liveUrl: "https://ai-language-learning.vercel.app"
     },
     {
       title: "Real-Time Chat Platform",
@@ -27,7 +31,9 @@ const Projects = () => {
       technologies: ["Socket.IO", "WebRTC", "Supabase Auth", "React", "Node.js", "Real-time"],
       icon: MessageCircle,
       category: "Web Application",
-      features: ["Anonymous Chat", "Real-time Messaging", "Video Calls", "User Authentication", "Room Management"]
+      features: ["Anonymous Chat", "Real-time Messaging", "Video Calls", "User Authentication", "Room Management"],
+      githubUrl: "https://github.com/yourusername/realtime-chat",
+      liveUrl: "https://realtime-chat-platform.vercel.app"
     },
     {
       title: "NutriMate: Dietary Recommender",
@@ -35,7 +41,9 @@ const Projects = () => {
       technologies: ["Deep Learning", "Python", "TensorFlow", "Data Analysis", "Health Tech"],
       icon: Utensils,
       category: "Research Project",
-      features: ["Personalized Recommendations", "Health Metrics Analysis", "Lifestyle Assessment", "Nutrition Planning", "ML Algorithms"]
+      features: ["Personalized Recommendations", "Health Metrics Analysis", "Lifestyle Assessment", "Nutrition Planning", "ML Algorithms"],
+      githubUrl: "https://github.com/yourusername/nutrimate-ai",
+      liveUrl: "https://nutrimate-demo.herokuapp.com"
     }
   ];
 
@@ -114,6 +122,7 @@ const Projects = () => {
                       variant="default" 
                       size="sm"
                       className="flex items-center space-x-2 hover:scale-105 transition-transform"
+                      onClick={() => window.open(project.githubUrl, '_blank')}
                     >
                       <Github size={16} />
                       <span>View Code</span>
@@ -122,6 +131,7 @@ const Projects = () => {
                       variant="outline" 
                       size="sm"
                       className="flex items-center space-x-2 hover:scale-105 transition-transform"
+                      onClick={() => window.open(project.liveUrl, '_blank')}
                     >
                       <ExternalLink size={16} />
                       <span>Live Demo</span>
@@ -144,6 +154,7 @@ const Projects = () => {
               <Button 
                 variant="default"
                 className="hover:scale-105 transition-transform"
+                onClick={() => window.open('https://github.com/yourusername', '_blank')}
               >
                 <Github className="w-4 h-4 mr-2" />
                 View All on GitHub

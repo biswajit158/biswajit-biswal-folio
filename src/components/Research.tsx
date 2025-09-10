@@ -128,6 +128,15 @@ const Research = () => {
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border">
                 <Button 
                   className="flex items-center space-x-2 hover:scale-105 transition-transform"
+                  onClick={() => {
+                    // Create a downloadable research paper PDF
+                    const link = document.createElement('a');
+                    link.href = '/research/nutrimate-research-paper.pdf';
+                    link.download = 'NutriMate-Research-Paper.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
                 >
                   <Download size={16} />
                   <span>Download Research Paper</span>
@@ -135,6 +144,7 @@ const Research = () => {
                 <Button 
                   variant="outline"
                   className="flex items-center space-x-2 hover:scale-105 transition-transform"
+                  onClick={() => window.open('https://arxiv.org/abs/your-paper-id', '_blank')}
                 >
                   <FileText size={16} />
                   <span>View Abstract</span>
