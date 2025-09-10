@@ -7,8 +7,6 @@ import DeviceStatus from "./DeviceStatus";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { scrollToSection } = usePageTransition();
@@ -19,13 +17,11 @@ const Header = () => {
       
       // Update scroll state for blur effect
       setIsScrolled(currentScrollY > 20);
-      
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   const navItems = [
     { href: '#home', label: 'Home' },
