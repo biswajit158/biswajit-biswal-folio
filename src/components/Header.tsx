@@ -35,9 +35,9 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <header className={`fixed top-0 left-0 right-0 z-[100] transform-none will-change-auto transition-all duration-300 ${
       isScrolled ? 'bg-background/95 backdrop-blur-md shadow-subtle border-b border-border/50' : 'bg-transparent'
-    } ${isTransitioning ? 'opacity-90' : 'opacity-100'}`}>
+    }`} style={{ transform: 'translateZ(0)' }}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold text-primary hover:text-primary-glow hover:scale-105 transition-all duration-300 cursor-pointer hover:drop-shadow-lg">
