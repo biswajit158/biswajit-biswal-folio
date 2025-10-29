@@ -5,112 +5,126 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useLazyLoad } from "@/hooks/use-lazy-load";
 import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle } from "lucide-react";
 import emailjs from '@emailjs/browser';
+import { z } from 'zod';
+
+// Zod validation schema
+const contactSchema = z.object({
+  name: z.string()
+    .trim()
+    .min(2, { message: "Name must be at least 2 characters" })
+    .max(100, { message: "Name must be less than 100 characters" }),
+  email: z.string()
+    .trim()
+    .email({ message: "Invalid email address" })
+    .max(255, { message: "Email must be less than 255 characters" }),
+  subject: z.string()
+    .trim()
+    .min(3, { message: "Subject must be at least 3 characters" })
+    .max(200, { message: "Subject must be less than 200 characters" }),
+  message: z.string()
+    .trim()
+    .min(10, { message: "Message must be at least 10 characters" })
+    .max(2000, { message: "Message must be less than 2000 characters" })
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const { toast } = useToast();
+  const [elementRef, isInView] = useLazyLoad({ threshold: 0.1, rootMargin: '50px' });
+  
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
-  const [fieldTouched, setFieldTouched] = useState<{[key: string]: boolean}>({});
-  const { toast } = useToast();
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
+  const [fieldTouched, setFieldTouched] = useState<Partial<Record<keyof ContactFormData, boolean>>>({});
 
-  const validateField = (name: string, value: string) => {
-    switch (name) {
-      case 'name':
-        return value.length < 2 ? 'Name must be at least 2 characters' : '';
-      case 'email':
-        return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Please enter a valid email address' : '';
-      case 'subject':
-        return value.length < 3 ? 'Subject must be at least 3 characters' : '';
-      case 'message':
-        return value.length < 10 ? 'Message must be at least 10 characters' : '';
-      default:
-        return '';
+  const validateField = (name: keyof ContactFormData, value: string) => {
+    try {
+      contactSchema.shape[name].parse(value);
+      return '';
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return error.errors[0]?.message || '';
+      }
+      return '';
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-
-    // Real-time validation
-    if (fieldTouched[name]) {
-      const error = validateField(name, value);
-      setFieldErrors(prev => ({
-        ...prev,
-        [name]: error
-      }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (fieldTouched[name as keyof ContactFormData]) {
+      const error = validateField(name as keyof ContactFormData, value);
+      setFieldErrors(prev => ({ ...prev, [name]: error }));
     }
   };
 
   const handleFieldBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFieldTouched(prev => ({ ...prev, [name]: true }));
-    const error = validateField(name, value);
+    const error = validateField(name as keyof ContactFormData, value);
     setFieldErrors(prev => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate all fields
-    const errors: {[key: string]: string} = {};
-    Object.entries(formData).forEach(([key, value]) => {
-      const error = validateField(key, value);
-      if (error) errors[key] = error;
-    });
 
-    if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
-      setFieldTouched({
-        name: true,
-        email: true,
-        subject: true,
-        message: true
-      });
-      toast({
-        title: "Validation Error",
-        description: "Please fix the errors in the form before submitting.",
-        variant: "destructive",
-      });
-      return;
+    // Validate all fields using Zod schema
+    try {
+      contactSchema.parse(formData);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as keyof ContactFormData] = err.message;
+          }
+        });
+        setFieldErrors(newErrors);
+        setFieldTouched({
+          name: true,
+          email: true,
+          subject: true,
+          message: true
+        });
+        toast({
+          title: "Validation Error",
+          description: "Please fix the errors in the form before submitting.",
+          variant: "destructive"
+        });
+        return;
+      }
     }
 
     setIsSubmitting(true);
 
     try {
+      // Sanitize and encode data before sending
+      const sanitizedData = {
+        from_name: formData.name.trim(),
+        from_email: formData.email.trim().toLowerCase(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        to_email: 'biswajit143kishan@gmail.com',
+      };
+
       // EmailJS configuration
       const serviceId = 'service_ihbrnil';
       const templateId = 'template_40ro7di'; 
       const publicKey = 'gNLeEX6vNNOL07jxw';
 
-      // Initialize EmailJS with your public key
       emailjs.init(publicKey);
 
-      // Send email using EmailJS
-      const result = await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          to_email: 'biswajit143kishan@gmail.com',
-        },
-        publicKey
-      );
-
-      console.log('EmailJS result:', result);
+      await emailjs.send(serviceId, templateId, sanitizedData, publicKey);
 
       toast({
         title: "Message Sent Successfully!",
@@ -121,9 +135,6 @@ const Contact = () => {
       setFieldErrors({});
       setFieldTouched({});
     } catch (error) {
-      console.error('Error sending message:', error);
-      
-      // More detailed error logging
       toast({
         title: "Failed to Send Message", 
         description: error instanceof Error ? error.message : "There was an error sending your message. Please try again later.",
@@ -189,9 +200,11 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-20 bg-muted/30">
+    <section id="contact" className="py-20 bg-muted/30" ref={elementRef as React.RefObject<HTMLElement>}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
+        {isInView && (
+          <>
+            <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Get In Touch</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             I'm always open to discussing new opportunities, collaborations, or just having 
@@ -328,6 +341,7 @@ const Contact = () => {
                   disabled={isSubmitting}
                   className="w-full hover:scale-[1.02] transition-all duration-200"
                   size="lg"
+                  aria-label="Send message"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center space-x-2">
@@ -417,6 +431,8 @@ const Contact = () => {
             </Card>
           </div>
         </div>
+        </>
+      )}
       </div>
     </section>
   );

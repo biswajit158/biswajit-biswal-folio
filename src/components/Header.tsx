@@ -38,18 +38,28 @@ const Header = () => {
   };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-[9999] w-full transition-all duration-300 ease-out ${
-        isScrolled 
-          ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border/40' 
-          : 'bg-background/10 backdrop-blur-md'
-      }`}
-      style={{ 
-        position: 'fixed',
-        backdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)',
-        WebkitBackdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)'
-      }}
-    >
+    <>
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-glow"
+      >
+        Skip to main content
+      </a>
+      
+      <header 
+        className={`fixed top-0 left-0 right-0 z-[9999] w-full transition-all duration-300 ease-out ${
+          isScrolled 
+            ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border/40' 
+            : 'bg-background/10 backdrop-blur-md'
+        }`}
+        role="banner"
+        style={{ 
+          position: 'fixed',
+          backdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)',
+          WebkitBackdropFilter: isScrolled ? 'blur(24px) saturate(200%)' : 'blur(12px) saturate(150%)'
+        }}
+      >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div 
@@ -61,7 +71,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <nav className="flex items-center space-x-8">
+            <nav className="flex items-center space-x-8" role="navigation" aria-label="Main navigation">
               {navItems.map((item) => (
                 <button
                   key={item.href}
@@ -87,9 +97,9 @@ const Header = () => {
               className={`min-w-[44px] min-h-[44px] text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 ${
                 isScrolled ? 'hover:scale-105' : ''
               }`}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === "dark" ? <Sun className="h-5 w-5" aria-hidden="true" /> : <Moon className="h-5 w-5" aria-hidden="true" />}
             </Button>
           </div>
 
@@ -102,17 +112,19 @@ const Header = () => {
               className={`min-w-[44px] min-h-[44px] text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 ${
                 isScrolled ? 'hover:scale-105' : ''
               }`}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === "dark" ? <Sun className="h-5 w-5" aria-hidden="true" /> : <Moon className="h-5 w-5" aria-hidden="true" />}
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="min-w-[44px] min-h-[44px] text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
             </Button>
           </div>
         </div>
@@ -123,7 +135,11 @@ const Header = () => {
             isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <nav className="mt-4 pb-4 bg-background/99 backdrop-blur-xl rounded-xl border border-border/60 mx-4 shadow-medium">
+          <nav 
+            className="mt-4 pb-4 bg-background/99 backdrop-blur-xl rounded-xl border border-border/60 mx-4 shadow-medium"
+            role="navigation" 
+            aria-label="Mobile navigation"
+          >
             <div className="flex flex-col space-y-1 p-4">
               {navItems.map((item, index) => (
                 <button
@@ -144,6 +160,7 @@ const Header = () => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 

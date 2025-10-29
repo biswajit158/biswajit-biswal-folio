@@ -2,8 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Github, ExternalLink, FileText, BookOpen, MessageCircle, Utensils } from "lucide-react";
+import { useLazyLoad } from "@/hooks/use-lazy-load";
 
 const Projects = () => {
+  const [elementRef, isInView] = useLazyLoad({ threshold: 0.1, rootMargin: '50px' });
+  
   const projects = [
     {
       title: "PDF-to-eBook Android App",
@@ -48,8 +51,9 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section id="projects" className="py-20 bg-muted/30" ref={elementRef as React.RefObject<HTMLElement>}>
+      <div className="container mx-auto px-4">{isInView && (
+        <>
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Featured Projects</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -123,6 +127,7 @@ const Projects = () => {
                       size="sm"
                       className="flex items-center space-x-2 hover:scale-105 transition-transform"
                       onClick={() => window.open(project.githubUrl, '_blank')}
+                      aria-label={`View ${project.title} code on GitHub`}
                     >
                       <Github size={16} />
                       <span>View Code</span>
@@ -132,6 +137,7 @@ const Projects = () => {
                       size="sm"
                       className="flex items-center space-x-2 hover:scale-105 transition-transform"
                       onClick={() => window.open(project.liveUrl, '_blank')}
+                      aria-label={`View ${project.title} live demo`}
                     >
                       <ExternalLink size={16} />
                       <span>Live Demo</span>
@@ -155,6 +161,7 @@ const Projects = () => {
                 variant="default"
                 className="hover:scale-105 transition-transform"
                 onClick={() => window.open('https://github.com/yourusername', '_blank')}
+                aria-label="View all projects on GitHub"
               >
                 <Github className="w-4 h-4 mr-2" />
                 View All on GitHub
@@ -162,6 +169,8 @@ const Projects = () => {
             </CardContent>
           </Card>
         </div>
+        </>
+      )}
       </div>
     </section>
   );
