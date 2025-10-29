@@ -101,27 +101,28 @@ const Certifications = () => {
           {certifications.map((cert, index) => {
             const isVisible = visibleCerts.includes(index);
             return (
-              <Card 
-                key={index} 
-                className={`group hover:shadow-glow transition-all duration-700 hover:scale-105 bg-card ${
-                  isVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${index * 200}ms` }}
+              <a
+                href={cert.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block cursor-pointer"
               >
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className={`w-12 h-12 rounded-lg ${cert.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
-                      <Award className="w-6 h-6" />
+                <Card 
+                  key={index} 
+                  className={`group hover:shadow-glow transition-all duration-700 hover:scale-105 bg-card ${
+                    isVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
+                  style={{ transitionDelay: `${index * 200}ms` }}
+                >
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className={`w-12 h-12 rounded-lg ${cert.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
+                        <Award className="w-6 h-6" />
+                      </div>
+                      <div className="text-muted-foreground group-hover:text-primary transition-colors">
+                        <ExternalLink size={18} />
+                      </div>
                     </div>
-                    <a 
-                      href={cert.link}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink size={18} />
-                    </a>
-                  </div>
                   
                   <CardTitle className="text-xl font-bold text-foreground mb-2">
                     {cert.title}
@@ -155,6 +156,7 @@ const Certifications = () => {
                   </div>
                 </CardContent>
               </Card>
+              </a>
             );
           })}
         </div>
