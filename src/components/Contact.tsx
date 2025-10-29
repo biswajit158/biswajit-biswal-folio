@@ -6,9 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useLazyLoad } from "@/hooks/use-lazy-load";
-import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle, PartyPopper } from "lucide-react";
 import emailjs from '@emailjs/browser';
 import { z } from 'zod';
+import ContactSkeleton from "./skeletons/ContactSkeleton";
 
 // Zod validation schema
 const contactSchema = z.object({
@@ -43,6 +44,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [fieldTouched, setFieldTouched] = useState<Partial<Record<keyof ContactFormData, boolean>>>({});
 
@@ -126,20 +128,49 @@ const Contact = () => {
 
       await emailjs.send(serviceId, templateId, sanitizedData, publicKey);
 
+      // Success animation
+      setIsSubmitSuccess(true);
+      
       toast({
-        title: "Message Sent Successfully!",
+        title: "Message Sent Successfully! 🎉",
         description: "Thank you for your message. I'll get back to you within 24 hours!",
       });
       
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setFieldErrors({});
-      setFieldTouched({});
+      // Reset form after animation
+      setTimeout(() => {
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFieldErrors({});
+        setFieldTouched({});
+        setIsSubmitSuccess(false);
+      }, 2000);
+      
     } catch (error) {
+      // Enhanced error handling
+      let errorMessage = "An unexpected error occurred. Please try again later.";
+      
+      if (error instanceof Error) {
+        // Check for specific EmailJS errors
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = "Network error. Please check your internet connection and try again.";
+        } else if (error.message.includes('Invalid')) {
+          errorMessage = "Invalid email configuration. Please contact the site administrator.";
+        } else if (error.message.includes('quota')) {
+          errorMessage = "Email service limit reached. Please try again later or contact directly via email.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "Failed to Send Message", 
-        description: error instanceof Error ? error.message : "There was an error sending your message. Please try again later.",
+        description: errorMessage,
         variant: "destructive",
       });
+      
+      // Log error for debugging (only in development)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('EmailJS Error Details:', error);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -199,12 +230,14 @@ const Contact = () => {
     }
   ];
 
+  if (!isInView) {
+    return <ContactSkeleton />;
+  }
+
   return (
     <section id="contact" className="py-20 bg-muted/30" ref={elementRef as React.RefObject<HTMLElement>}>
       <div className="container mx-auto px-4">
-        {isInView && (
-          <>
-            <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Get In Touch</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             I'm always open to discussing new opportunities, collaborations, or just having 
@@ -214,7 +247,26 @@ const Contact = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Form */}
-          <Card className="bg-card-gradient shadow-medium animate-slide-in">
+          <Card className={`bg-card-gradient shadow-medium animate-slide-in relative overflow-hidden ${
+            isSubmitSuccess ? 'border-2 border-green-500' : ''
+          }`}>
+            {/* Success Animation Overlay */}
+            {isSubmitSuccess && (
+              <div className="absolute inset-0 bg-background/95 backdrop-blur-sm z-10 flex items-center justify-center animate-fade-in">
+                <div className="text-center space-y-4">
+                  <div className="w-20 h-20 mx-auto bg-green-500/20 rounded-full flex items-center justify-center animate-scale-in">
+                    <CheckCircle className="w-12 h-12 text-green-600 animate-bounce" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
+                      Message Sent! <PartyPopper className="w-6 h-6 text-primary" />
+                    </h3>
+                    <p className="text-muted-foreground">Thank you for reaching out!</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <CardHeader>
               <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
               <p className="text-muted-foreground">
@@ -431,8 +483,6 @@ const Contact = () => {
             </Card>
           </div>
         </div>
-        </>
-      )}
       </div>
     </section>
   );
