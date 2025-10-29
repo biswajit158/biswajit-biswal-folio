@@ -3,18 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Download, Award, BookOpen, Brain, TrendingUp } from "lucide-react";
 import { useLazyLoad } from "@/hooks/use-lazy-load";
-import ResearchSkeleton from "./skeletons/ResearchSkeleton";
 
 const Research = () => {
   const [elementRef, isInView] = useLazyLoad({ threshold: 0.1, rootMargin: '50px' });
   
-  if (!isInView) {
-    return <ResearchSkeleton />;
-  }
-
   return (
     <section id="research" className="py-20 bg-background" ref={elementRef as React.RefObject<HTMLElement>}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4">{isInView && (
+        <>
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Research Work</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -176,6 +172,8 @@ const Research = () => {
             </Card>
           </div>
         </div>
+        </>
+      )}
       </div>
     </section>
   );

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Github, ExternalLink, FileText, BookOpen, MessageCircle, Utensils } from "lucide-react";
 import { useLazyLoad } from "@/hooks/use-lazy-load";
-import ProjectsSkeleton from "./skeletons/ProjectsSkeleton";
 
 const Projects = () => {
   const [elementRef, isInView] = useLazyLoad({ threshold: 0.1, rootMargin: '50px' });
@@ -51,13 +50,10 @@ const Projects = () => {
     }
   ];
 
-  if (!isInView) {
-    return <ProjectsSkeleton />;
-  }
-
   return (
     <section id="projects" className="py-20 bg-muted/30" ref={elementRef as React.RefObject<HTMLElement>}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4">{isInView && (
+        <>
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Featured Projects</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -173,6 +169,8 @@ const Projects = () => {
             </CardContent>
           </Card>
         </div>
+        </>
+      )}
       </div>
     </section>
   );
