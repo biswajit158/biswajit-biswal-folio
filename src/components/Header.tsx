@@ -84,9 +84,10 @@ const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className={`text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 ${
+              className={`min-w-[44px] min-h-[44px] text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 ${
                 isScrolled ? 'hover:scale-105' : ''
               }`}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             >
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
@@ -98,7 +99,7 @@ const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className={`text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 ${
+              className={`min-w-[44px] min-h-[44px] text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 ${
                 isScrolled ? 'hover:scale-105' : ''
               }`}
             >
@@ -108,23 +109,31 @@ const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+              className="min-w-[44px] min-h-[44px] text-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
-              {isMobileMenuOpen ? <X /> : <Menu />}
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 animate-fade-in bg-background/99 backdrop-blur-xl rounded-xl border border-border/60 mx-4 shadow-medium">
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <nav className="mt-4 pb-4 bg-background/99 backdrop-blur-xl rounded-xl border border-border/60 mx-4 shadow-medium">
             <div className="flex flex-col space-y-1 p-4">
               {navItems.map((item, index) => (
                 <button
                   key={item.href}
                   onClick={() => handleScrollToSection(item.href)}
-                  className="text-left text-foreground hover:text-primary transition-all duration-300 font-medium py-3 px-4 rounded-lg hover:bg-primary/10 relative group"
+                  className={`text-left text-foreground hover:text-primary active:text-primary transition-all duration-300 font-medium min-h-[44px] px-4 rounded-lg hover:bg-primary/10 active:bg-primary/20 relative group flex items-center ${
+                    isMobileMenuOpen ? 'animate-fade-in' : ''
+                  }`}
                   style={{ animationDelay: `${index * 50}ms` }}
+                  aria-label={`Navigate to ${item.label}`}
                 >
                   {item.label}
                   <span className="absolute inset-x-4 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"></span>
@@ -132,7 +141,7 @@ const Header = () => {
               ))}
             </div>
           </nav>
-        )}
+        </div>
       </div>
     </header>
   );
