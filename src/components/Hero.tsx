@@ -23,6 +23,8 @@ const Hero = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
+        role="presentation"
+        aria-hidden="true"
       ></div>
       <div className="container mx-auto px-4 text-center relative z-20 py-16">
         <div className="animate-fade-in bg-card/90 dark:bg-card/80 backdrop-blur-xl rounded-3xl p-12 shadow-glow border border-border/50 max-w-4xl mx-auto">
@@ -32,6 +34,8 @@ const Hero = () => {
               <img
                 src="/lovable-uploads/ca638ad2-6bf6-4594-a3b2-fdf20a261301.png"
                 alt="Biswajit Biswal - Professional Software Developer"
+                loading="eager"
+                fetchPriority="high"
                 className="relative w-52 h-52 rounded-full mx-auto shadow-glow border-4 border-primary/50 object-cover transition-all duration-500 ring-8 ring-primary/20 group-hover:ring-primary/40 group-hover:scale-105 group-hover:shadow-2xl"
               />
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/30 to-transparent group-hover:from-primary/20 transition-all duration-300"></div>
