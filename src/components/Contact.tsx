@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useLazyLoad } from "@/hooks/use-lazy-load";
-import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, MapPin, Phone, Github, Linkedin, Send, Facebook, Instagram, CheckCircle, AlertCircle, PartyPopper } from "lucide-react";
+import ContactSkeleton from "@/components/skeletons/ContactSkeleton";
 import emailjs from '@emailjs/browser';
 import { z } from 'zod';
 
@@ -43,6 +44,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [fieldTouched, setFieldTouched] = useState<Partial<Record<keyof ContactFormData, boolean>>>({});
 
@@ -126,6 +128,9 @@ const Contact = () => {
 
       await emailjs.send(serviceId, templateId, sanitizedData, publicKey);
 
+      // Show success animation
+      setIsSubmitSuccess(true);
+      
       toast({
         title: "Message Sent Successfully!",
         description: "Thank you for your message. I'll get back to you within 24 hours!",
@@ -134,10 +139,42 @@ const Contact = () => {
       setFormData({ name: '', email: '', subject: '', message: '' });
       setFieldErrors({});
       setFieldTouched({});
+
+      // Reset success state after 2 seconds
+      setTimeout(() => {
+        setIsSubmitSuccess(false);
+      }, 2000);
     } catch (error) {
+      // Enhanced error handling
+      let errorTitle = "Failed to Send Message";
+      let errorDescription = "There was an error sending your message. Please try again later.";
+
+      if (error instanceof Error) {
+        // Network errors
+        if (error.message.includes('network') || error.message.includes('fetch')) {
+          errorTitle = "Network Error";
+          errorDescription = "Please check your internet connection and try again.";
+        }
+        // EmailJS configuration errors
+        else if (error.message.includes('Invalid') || error.message.includes('not found')) {
+          errorTitle = "Configuration Error";
+          errorDescription = "There's an issue with the email service. Please contact directly via email.";
+        }
+        // Rate limit/quota errors
+        else if (error.message.includes('quota') || error.message.includes('limit')) {
+          errorTitle = "Service Limit Reached";
+          errorDescription = "The email service is temporarily unavailable. Please try again later or contact directly.";
+        }
+        
+        // Development-only logging
+        if (import.meta.env.DEV) {
+          console.error('EmailJS Error:', error);
+        }
+      }
+
       toast({
-        title: "Failed to Send Message", 
-        description: error instanceof Error ? error.message : "There was an error sending your message. Please try again later.",
+        title: errorTitle,
+        description: errorDescription,
         variant: "destructive",
       });
     } finally {
@@ -202,7 +239,18 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 bg-muted/30" ref={elementRef as React.RefObject<HTMLElement>}>
       <div className="container mx-auto px-4">
-        {isInView && (
+        {!isInView ? (
+          <div className="animate-fade-in">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Get In Touch</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                I'm always open to discussing new opportunities, collaborations, or just having 
+                a conversation about technology and innovation. Let's connect!
+              </p>
+            </div>
+            <ContactSkeleton />
+          </div>
+        ) : (
           <>
             <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Get In Touch</h2>
@@ -214,7 +262,27 @@ const Contact = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Form */}
-          <Card className="bg-card-gradient shadow-medium animate-slide-in">
+          <Card className={`bg-card-gradient shadow-medium animate-slide-in relative overflow-hidden transition-all duration-300 ${
+            isSubmitSuccess ? 'ring-2 ring-green-500 shadow-[0_0_20px_rgba(34,197,94,0.3)]' : ''
+          }`}>
+            {/* Success Overlay */}
+            {isSubmitSuccess && (
+              <div className="absolute inset-0 bg-green-500/10 backdrop-blur-sm z-10 flex items-center justify-center animate-fade-in">
+                <div className="text-center space-y-4 animate-scale-in">
+                  <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                    <CheckCircle className="w-12 h-12 text-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <PartyPopper className="w-6 h-6 text-green-600" />
+                      <h3 className="text-2xl font-bold text-green-700">Message Sent!</h3>
+                      <PartyPopper className="w-6 h-6 text-green-600" />
+                    </div>
+                    <p className="text-green-600">I'll get back to you soon!</p>
+                  </div>
+                </div>
+              </div>
+            )}
             <CardHeader>
               <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
               <p className="text-muted-foreground">

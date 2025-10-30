@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Github, ExternalLink, FileText, BookOpen, MessageCircle, Utensils } from "lucide-react";
 import { useLazyLoad } from "@/hooks/use-lazy-load";
+import ProjectsSkeleton from "@/components/skeletons/ProjectsSkeleton";
 
 const Projects = () => {
   const [elementRef, isInView] = useLazyLoad({ threshold: 0.1, rootMargin: '50px' });
@@ -52,8 +53,7 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-20 bg-muted/30" ref={elementRef as React.RefObject<HTMLElement>}>
-      <div className="container mx-auto px-4">{isInView && (
-        <>
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Featured Projects</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -61,7 +61,10 @@ const Projects = () => {
             web platforms, and research initiatives that showcase my technical expertise and creativity.
           </p>
         </div>
-
+        {!isInView ? (
+          <ProjectsSkeleton />
+        ) : (
+        <>
         <div className="grid lg:grid-cols-2 gap-8">
           {projects.map((project, index) => {
             const IconComponent = project.icon;
