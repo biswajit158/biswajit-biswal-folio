@@ -8,23 +8,18 @@ const HackerLoader = ({ onLoadComplete }: { onLoadComplete: () => void }) => {
   const [matrixChars, setMatrixChars] = useState<string[]>([]);
 
   const loadingSequence = [
-    '$ ssh root@portfolio.secure.dev',
-    '> Connecting to 192.168.1.42:8080...',
-    '> Authenticating credentials...',
+    '$ ssh root@portfolio.dev',
+    '> Connecting...',
     '> [OK] Connection established',
-    '$ npm run initialize --mode=secure',
-    '> Building production bundle...',
-    '> Webpack 5.89.0 compiled successfully',
+    '$ npm run build --production',
+    '> Webpack compiled successfully',
     '$ docker-compose up -d',
     '> Starting services... [████████] 100%',
-    '> Database migration complete',
-    '$ systemctl status portfolio.service',
     '> ✓ Active (running) since ' + new Date().toLocaleTimeString(),
     '> Loading React components...',
     '> Mounting virtual DOM...',
-    '> Initializing state management...',
     '> ✓ All systems operational',
-    '$ clear && echo "ACCESS GRANTED"',
+    '$ echo "ACCESS GRANTED"',
     '> Welcome to the portfolio'
   ];
 
@@ -59,18 +54,18 @@ const HackerLoader = ({ onLoadComplete }: { onLoadComplete: () => void }) => {
           if (currentStep < loadingSequence.length) {
             setTimeout(() => {
               setLoadingText('');
-            }, 100);
+            }, 50);
           }
         }
       } else {
         clearInterval(interval);
         setTimeout(() => {
           onLoadComplete();
-        }, 800);
+        }, 500);
       }
     };
 
-    interval = setInterval(typeText, 30);
+    interval = setInterval(typeText, 20);
 
     // Cursor blink effect
     const cursorInterval = setInterval(() => {
