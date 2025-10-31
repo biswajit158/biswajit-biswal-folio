@@ -239,13 +239,13 @@ const WhatImLearning = () => {
             {/* Learning Philosophy */}
             <Card 
               ref={philosophyRef}
-              className={`bg-hero-gradient text-white shadow-glow transition-all duration-700 delay-500 ${
+              className={`bg-hero-gradient text-primary-foreground shadow-glow transition-all duration-700 delay-500 ${
                 isPhilosophyVisible ? 'animate-fade-in opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
-                  <Lightbulb className="text-white" />
+                  <Lightbulb className="text-primary-foreground" />
                   Learning Philosophy
                 </CardTitle>
               </CardHeader>
@@ -253,13 +253,13 @@ const WhatImLearning = () => {
                 <div className="space-y-3">
                   {learningPhilosophy.map((principle, index) => (
                     <div key={principle} className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                      <p className="text-white/90">{principle}</p>
+                      <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
+                      <p className="text-primary-foreground/90">{principle}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 p-4 bg-white/10 rounded-lg border border-white/20">
-                  <p className="text-white/90 text-sm leading-relaxed">
+                <div className="mt-6 p-4 bg-primary-foreground/10 rounded-lg border border-primary-foreground/20">
+                  <p className="text-primary-foreground/90 text-sm leading-relaxed">
                     "The key to mastering technology is not just learning syntax, but understanding 
                     the underlying principles and staying curious about how things work beneath the surface."
                   </p>

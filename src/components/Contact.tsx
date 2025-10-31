@@ -270,7 +270,7 @@ const Contact = () => {
               <div className="absolute inset-0 bg-green-500/10 backdrop-blur-sm z-10 flex items-center justify-center animate-fade-in">
                 <div className="text-center space-y-4 animate-scale-in">
                   <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                    <CheckCircle className="w-12 h-12 text-white" />
+                    <CheckCircle className="w-12 h-12 text-primary-foreground" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center justify-center gap-2">
@@ -487,10 +487,10 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-hero-gradient text-white shadow-glow">
+            <Card className="bg-hero-gradient text-primary-foreground shadow-glow">
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold mb-2">Let's Build Something Amazing</h3>
-                <p className="text-white/90 leading-relaxed">
+                <p className="text-primary-foreground/90 leading-relaxed">
                   Whether you have a project in mind, need consultation, or just want to 
                   discuss the latest in technology, I'm always excited to connect with 
                   fellow innovators and creators.
