@@ -11,6 +11,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import HackerLoader from "@/components/HackerLoader";
+import BackToTop from "@/components/BackToTop";
 
 const Index = () => {
   const [showLoader, setShowLoader] = useState(true);
@@ -55,6 +56,7 @@ const Index = () => {
           <Contact />
         </main>
         <Footer />
+        <BackToTop />
       </div>
     </>
   );

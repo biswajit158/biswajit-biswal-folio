@@ -87,9 +87,8 @@ const About = () => {
               <div className="mt-8 text-center">
                 <Button 
                   onClick={() => {
-                    // Create a temporary link to download CV
                     const link = document.createElement('a');
-                    link.href = '/cv-biswajit-biswal.pdf'; // Placeholder CV path
+                    link.href = '/resume.pdf';
                     link.download = 'Biswajit_Biswal_Resume.pdf';
                     document.body.appendChild(link);
                     link.click();
